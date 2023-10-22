@@ -1,5 +1,6 @@
 openai
 ffmpeg
+pytube
 pytube3
 torch
 torchvision
@@ -7,3 +8,4 @@ torchaudio
 pydub
 elevenlabs
 requests
+urllib3==1.26.6

@@ -3,8 +3,11 @@ import tempfile
 from pydub import AudioSegment
 import openai
 
+
 def speech_to_text(video_path):
     """Convert the audio content of a video into text."""
+    # openai.api_key = "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"  # Audioland acc key - not working
+    openai.api_key = "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"  # slava's key
     try:
         # Check if the file exists
         if not os.path.exists(video_path):
@@ -16,8 +19,8 @@ def speech_to_text(video_path):
         # Extract Audio from Video
         audio_content = AudioSegment.from_file(video_path, format=file_format)
 
-        # Determine the 10-minute Mark
-        ten_minutes_in_ms = 10 * 60 * 1000
+        # Determine the 1-minute Mark
+        ten_minutes_in_ms = 1 * 60 * 1000
 
         # Initialize an Empty Transcript
         transcript_parts = []
