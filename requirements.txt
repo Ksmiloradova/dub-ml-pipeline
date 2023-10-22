@@ -1,0 +1,9 @@
+openai
+ffmpeg
+pytube3
+torch
+torchvision
+torchaudio
+pydub
+elevenlabs
+requests
