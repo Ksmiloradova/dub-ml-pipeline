@@ -16,21 +16,18 @@ import firebase_admin
 # не уверены, как исправить
 if not firebase_admin._apps:
     cred = credentials.Certificate('/content/sample_data/audioland-dub-firebase-adminsdk-xfwtj-4228d1d618.json')
-    default_app = firebase_admin.initialize_app(cred)
+    firebase_admin.initialize_app(cred)
 
-the_bucket = storage.bucket(name='audioland-dub.appspot.com')
+bucket = storage.bucket(name='audioland-dub.appspot.com')
 
-def download_blob(bucket, source_blob_name, destination_file_name):
-
+def download_blob(source_blob_name, destination_file_name):
     blob = bucket.blob(source_blob_name)
-
     blob.download_to_filename(destination_file_name)
 
-def upload_blob(bucket, source_file_name, destination_blob_name):
-
-    blob = the_bucket.blob(destination_blob_name)
-
+def upload_blob(source_file_name, destination_blob_name):
+    blob = bucket.blob(destination_blob_name)
     blob.upload_from_filename(source_file_name)
+    os.remove(source_file_name)
 
 # source_blob_name = # здесь  'userId/projectId/Original Media File'
 # destination_file_name = # здесь 'userId_projectId_Original Media File'
@@ -38,14 +35,12 @@ def upload_blob(bucket, source_file_name, destination_blob_name):
 # Хардкод для тестов (выгрузили с облака)
 source_blob_name='XYClUMP7wEPl8ktysClADpuaPIq2/4kIRz5B1JY0GAO1uj0dE/test-video-1min.mp4'
 destination_file_name = 'XYClUMP7wEPl8ktysClADpuaPIq2_4kIRz5B1JY0GAO1uj0dE_test-video-1min.mp4' # уникальное имя файла
-download_blob(the_bucket, source_blob_name, destination_file_name)
+download_blob(bucket, source_blob_name, destination_file_name)
 
 # здесь отрабатывает нейронка
 # video path = destination_file_name
 
-# Хардкод для тестов (загрузили обработанное)
+# Хардкод для тестов (загрузили обработанно)
 source_file_name = destination_file_name # имя файла на локальной машине после обработки сеткой
 destination_blob_name = source_blob_name[:-4] + '_translated.mp4' # выгружаем обратно с заменённым окончанием
-upload_blob(the_bucket, source_file_name, destination_blob_name)
-
-os.remove(source_file_name)
+upload_blob(bucket, source_file_name, destination_blob_name)
